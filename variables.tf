@@ -93,5 +93,151 @@ EOT
       type        = optional(string)
     }))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        length(v.linked_service_name) > 0
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.http_server_location == null || (length(v.http_server_location.relative_url) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.http_server_location == null || (length(v.http_server_location.path) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.http_server_location == null || (length(v.http_server_location.filename) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.azure_blob_storage_location == null || (length(v.azure_blob_storage_location.container) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.azure_blob_storage_location == null || (v.azure_blob_storage_location.filename == null || (length(v.azure_blob_storage_location.filename) > 0))
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.azure_blob_fs_location == null || (v.azure_blob_fs_location.file_system == null || (length(v.azure_blob_fs_location.file_system) > 0))
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.azure_blob_fs_location == null || (v.azure_blob_fs_location.path == null || (length(v.azure_blob_fs_location.path) > 0))
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.azure_blob_fs_location == null || (v.azure_blob_fs_location.filename == null || (length(v.azure_blob_fs_location.filename) > 0))
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.encoding == null || (length(v.encoding) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.description == null || (length(v.description) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.folder == null || (length(v.folder) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.schema_column == null || (length(v.schema_column.name) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.schema_column == null || (v.schema_column.type == null || (contains(["Byte", "Byte[]", "Boolean", "Date", "DateTime", "DateTimeOffset", "Decimal", "Double", "Guid", "Int16", "Int32", "Int64", "Single", "String", "TimeSpan"], v.schema_column.type)))
+      )
+    ])
+    error_message = "must be one of: Byte, Byte[], Boolean, Date, DateTime, DateTimeOffset, Decimal, Double, Guid, Int16, Int32, Int64, Single, String, TimeSpan"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.schema_column == null || (v.schema_column.description == null || (length(v.schema_column.description) > 0))
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.compression_codec == null || (contains(["None", "bzip2", "gzip", "deflate", "ZipDeflate", "TarGzip", "Tar", "snappy", "lz4"], v.compression_codec))
+      )
+    ])
+    error_message = "must be one of: None, bzip2, gzip, deflate, ZipDeflate, TarGzip, Tar, snappy, lz4"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_dataset_delimited_texts : (
+        v.compression_level == null || (contains(["Optimal", "Fastest"], v.compression_level))
+      )
+    ])
+    error_message = "must be one of: Optimal, Fastest"
+  }
+  # --- Unconfirmed validation candidates, derived from azurerm_data_factory_dataset_delimited_text's provider source ---
+  # Not auto-enabled: either a bespoke provider validator we can't safely translate,
+  # or a path that crosses a list-typed block (needs its own for_each wrapping).
+  # Review, translate into a real validation{} block above, and delete once confirmed.
+  # path: name
+  #   source:    [from validate.LinkedServiceDatasetName] regexp.MustCompile(`^[-.+?/<>*%&:\\]+$`).MatchString(value)
+  # path: data_factory_id
+  #   source:    [from factories.ValidateFactoryID] !ok
+  # path: data_factory_id
+  #   source:    [from factories.ValidateFactoryID] err != nil
 }
 
